@@ -219,12 +219,12 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Henry. Visuals Studio. All rights reserved.</p>
             <div class="social-links">
                 <a href="https://discord.com/users/.qhen" target="_blank">Discord</a>
                 <a href="https://www.instagram.com/qhen.visuals/" target="_blank">Instagram</a>
                 <a href="https://x.com/_qhen" target="_blank">X(Twitter)</a>
             </div>
+            <p>&copy; 2026 Henry. Visuals Studio. All rights reserved.</p>
         </div>
     </footer>
 
@@ -322,6 +322,65 @@
                 // Reset button
                 submitBtn.textContent = 'SEND MESSAGE';
                 submitBtn.disabled = false;
+            });
+        });
+
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = Array.from(document.querySelectorAll('section[id]'));
+        const sectionToNav = {
+            'works': '#works',
+            'music-videos': '#works',
+            'about': '#about',
+            'tos': '#tos',
+            'project': '#project'
+        };
+
+        function setActiveNavBySection(sectionId) {
+            const activeHash = sectionToNav[sectionId] || `#${sectionId}`;
+            navLinks.forEach((link) => {
+                link.classList.toggle('active', link.getAttribute('href') === activeHash);
+            });
+        }
+
+        const navHeight = document.querySelector('.navbar')?.offsetHeight || 80;
+
+        function updateActiveNav() {
+            const scrollPosition = window.scrollY + navHeight + 20;
+            const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 4;
+            let activeSectionId = sections[0]?.id || '';
+
+            if (nearBottom) {
+                activeSectionId = 'project';
+            } else {
+                for (const section of sections) {
+                    if (scrollPosition >= section.offsetTop) {
+                        activeSectionId = section.id;
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            setActiveNavBySection(activeSectionId);
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        window.addEventListener('load', updateActiveNav);
+        updateActiveNav();
+
+        navLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    link.blur();
+                }, 100);
+            });
+        });
+
+        navLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                setTimeout(() => {
+                    link.blur();
+                }, 100);
             });
         });
     </script>
